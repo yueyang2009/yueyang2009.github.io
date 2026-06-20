@@ -1,0 +1,25 @@
+{
+  "name": "yueyang2009.github.io",
+  "version": "1.0.0",
+  "description": "李岳阳 · 财税顾问个人网站",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yueyang2009/yueyang2009.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yueyang2009/yueyang2009.github.io/issues"
+  },
+  "homepage": "https://github.com/yueyang2009/yueyang2009.github.io#readme",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

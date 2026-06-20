@@ -1,0 +1,391 @@
+1|<!DOCTYPE html>
+2|<html lang="zh-CN">
+3|<head>
+4|<meta charset="UTF-8">
+5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
+6|<title>某测绘企业 · 财税风险诊断</title>
+7|<style>
+8|*{margin:0;padding:0;box-sizing:border-box}
+9|body{background:#0f172a;font-family:'PingFang SC','Microsoft YaHei',sans-serif;color:#e2e8f0;overflow:hidden;height:100vh}
+10|.flip-book{width:100%;height:100vh;position:relative}
+11|.page{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;padding:40px 56px 72px;opacity:0;transition:opacity .35s,transform .35s;transform:translateX(50px);overflow-y:auto}
+12|.page.active{opacity:1;transform:translateX(0);z-index:2}
+13|.page.prev{opacity:0;transform:translateX(-50px);z-index:1}
+14|.cover{justify-content:center;align-items:center;text-align:center;padding:60px}
+15|.cover h1{font-size:52px;font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+16|.cover .sub{font-size:16px;color:#94a3b8;margin-bottom:28px}
+17|.cover .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:560px;margin:0 auto 32px}
+18|.cover .stat{background:rgba(30,41,59,0.6);border-radius:14px;padding:18px;border:1px solid rgba(148,163,184,0.08)}
+19|.cover .stat .n{font-size:26px;font-weight:700}
+20|.cover .stat .l{font-size:11px;color:#64748b;margin-top:2px}
+21|.start-btn{padding:14px 52px;border-radius:30px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;color:#fff;font-size:16px;cursor:pointer}
+22|.top{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-shrink:0}
+23|.top h2{font-size:17px;font-weight:600}
+24|.top .badge{padding:2px 12px;border-radius:12px;font-size:11px;font-weight:500}
+25|.badge.crimson{background:rgba(220,38,38,0.15);color:#ef4444}
+26|.badge.high{background:rgba(239,68,68,0.15);color:#ef4444}
+27|.badge.mid{background:rgba(245,158,11,0.15);color:#f59e0b}
+28|.top .num{font-size:12px;color:#64748b;margin-left:auto}
+29|.mega{display:flex;gap:12px;margin-bottom:14px;flex-shrink:0}
+30|.mega-item{flex:1;background:rgba(30,41,59,0.5);border-radius:14px;padding:14px 12px;text-align:center;border:1px solid rgba(148,163,184,0.06)}
+31|.mega-item .val{font-size:36px;font-weight:800;line-height:1.1}
+32|.mega-item .val.crimson{color:#dc2626}
+33|.mega-item .val.high{color:#ef4444}
+34|.mega-item .val.mid{color:#f59e0b}
+35|.mega-item .val.info{color:#60a5fa}
+36|.mega-item .lab{font-size:11px;color:#94a3b8;margin-top:3px}
+37|.visual-main{flex:1;display:flex;gap:14px;min-height:0}
+38|.chart-card{background:rgba(30,41,59,0.5);border-radius:16px;padding:18px;border:1px solid rgba(148,163,184,0.06);flex:1;display:flex;flex-direction:column}
+39|.chart-card .ctitle{font-size:12px;font-weight:500;color:#94a3b8;margin-bottom:10px}
+40|.footer-strip{margin-top:10px;padding:9px 16px;background:linear-gradient(135deg,rgba(96,165,250,0.1),rgba(167,139,250,0.08));border-radius:10px;font-size:13px;color:#93c5fd;text-align:center;flex-shrink:0}
+41|.nav-bar{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:20px;padding:12px;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-top:1px solid rgba(148,163,184,0.1);z-index:100}
+42|.nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(148,163,184,0.15);background:rgba(30,41,59,0.5);color:#e2e8f0;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+43|.nav-btn:disabled{opacity:0.25;cursor:default}
+44|.dots{display:flex;gap:5px}
+45|.dot{width:6px;height:6px;border-radius:50%;background:rgba(148,163,184,0.15);border:none;cursor:pointer}
+46|.dot.active{background:#60a5fa;width:18px;border-radius:3px}
+47|@media(max-width:768px){
+48|  .page{padding:20px 16px 68px}
+49|  .mega{flex-wrap:wrap;gap:8px}
+50|  .mega-item .val{font-size:24px}
+51|  .visual-main{flex-direction:column}
+52|  .cover h1{font-size:28px}
+53|}
+54|</style>
+55|</head>
+56|<body>
+57|
+58|<div class="flip-book" id="book">
+59|
+60|<!-- 封面 -->
+61|<div class="page cover active">
+62|  <h1>📐 财税风险诊断</h1>
+63|  <div class="sub">某测绘服务企业（高企） · 高新技术企业</div>
+64|  <div class="grid">
+65|    <div class="stat"><div class="n" style="color:#dc2626">5</div><div class="l">核心风险</div></div>
+66|    <div class="stat"><div class="n" style="color:#dc2626">2,410万</div><div class="l">个体户虚开发票金额</div></div>
+67|    <div class="stat"><div class="n" style="color:#ef4444">76.4%</div><div class="l">虚开成本占比</div></div>
+68|  </div>
+69|  <div class="sub" style="font-size:13px;color:#64748b">已获取：2023-2025年财务报表·科目余额表·序时账·高企认证</div>
+70|  <button class="start-btn" onclick="goTo(1)">开始 →</button>
+71|</div>
+72|
+73|<!-- 概况 -->
+74|<div class="page" data-page="1">
+75|  <div class="top"><h2>📋 企业概况</h2><span class="num">概况</span></div>
+76|  <div class="mega">
+77|    <div class="mega-item"><div class="val info">高新企业</div><div class="lab">有效期内 2024-2027</div></div>
+78|    <div class="mega-item"><div class="val mid">75%</div><div class="lab">应收账款/总资产</div></div>
+79|    <div class="mega-item"><div class="val high">71.2%</div><div class="lab">应收/收入比</div></div>
+80|  </div>
+81|  <div class="visual-main">
+82|    <div class="chart-card" style="flex:0.35">
+83|      <div class="ctitle">🎯 风险全景</div>
+84|      <svg viewBox="0 0 200 260" style="width:100%;height:100%">
+85|        <rect x="10" y="10" width="80" height="70" rx="10" fill="rgba(220,38,38,0.12)" stroke="#dc2626" stroke-width="1.5"/>
+86|        <text x="50" y="35" text-anchor="middle" fill="#dc2626" font-size="22">📄</text>
+87|        <text x="50" y="55" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="600">R1 虚开发票</text>
+88|        <text x="50" y="68" text-anchor="middle" fill="#dc2626" font-size="9">金额2,410万</text>
+89|        <rect x="110" y="10" width="80" height="70" rx="10" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1.5"/>
+90|        <text x="150" y="35" text-anchor="middle" fill="#ef4444" font-size="22">💰</text>
+91|        <text x="150" y="55" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">R2 薪酬挂账</text>
+92|        <text x="150" y="68" text-anchor="middle" fill="#ef4444" font-size="9">挂账率67.8%</text>
+93|        <rect x="10" y="95" width="80" height="70" rx="10" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+94|        <text x="50" y="120" text-anchor="middle" fill="#f59e0b" font-size="22">👥</text>
+95|        <text x="50" y="140" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R3 公私混同</text>
+96|        <text x="50" y="153" text-anchor="middle" fill="#f59e0b" font-size="9">大股东（持股91.8%）借1,604万</text>
+97|        <rect x="110" y="95" width="80" height="70" rx="10" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+98|        <text x="150" y="120" text-anchor="middle" fill="#f59e0b" font-size="22">🎯</text>
+99|        <text x="150" y="140" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R4 应收占比</text>
+100|        <text x="150" y="153" text-anchor="middle" fill="#f59e0b" font-size="9">回款超8月</text>
+101|        <rect x="10" y="180" width="180" height="70" rx="10" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2"/>
+102|        <text x="100" y="205" text-anchor="middle" fill="#f59e0b" font-size="12">R5 账务混乱</text>
+103|        <text x="100" y="225" text-anchor="middle" fill="#94a3b8" font-size="9">调账·冲减·非标准分录</text>
+104|        <text x="100" y="240" text-anchor="middle" fill="#94a3b8" font-size="9">库存商品262万无明细</text>
+105|      </svg>
+106|    </div>
+107|    <div class="chart-card">
+108|      <div class="ctitle">🏢 企业画像</div>
+109|      <svg viewBox="0 0 310 260" style="width:100%;height:100%">
+110|        <text x="10" y="22" fill="#94a3b8" font-size="12">测绘服务 · 高新技术企业（2024-2027）</text>
+111|        <text x="10" y="44" fill="#94a3b8" font-size="12">主要客户：铁路工程企业（中铁等）</text>
+112|        <rect x="10" y="65" width="290" height="55" rx="8" fill="rgba(239,68,68,0.06)"/>
+113|        <text x="155" y="85" text-anchor="middle" fill="#ef4444" font-size="13" font-weight="600">⚡ 核心矛盾</text>
+114|        <text x="155" y="107" text-anchor="middle" fill="#94a3b8" font-size="11">主营业务：测绘工程服务</text>
+115|        <text x="155" y="122" text-anchor="middle" fill="#94a3b8" font-size="11">买发票内容：百货·五金·信息咨询</text>
+116|        <rect x="10" y="135" width="290" height="40" rx="8" fill="rgba(245,158,11,0.08)"/>
+117|        <text x="155" y="155" text-anchor="middle" fill="#f59e0b" font-size="12">高企资质风险：虚开发票金额过大 → 可能被取消高新资格</text>
+118|        <text x="155" y="170" text-anchor="middle" fill="#f59e0b" font-size="12">→ 补缴已享受的税收优惠</text>
+119|      </svg>
+120|    </div>
+121|  </div>
+122|  <div class="footer-strip">💡 测绘公司买了2,410万的百货发票做成本——业务是测绘，发票是百货，税务局一看就懂</div>
+123|</div>
+124|
+125|<!-- R1 虚开发票 -->
+126|<div class="page" data-page="2">
+127|  <div class="top"><h2>📄 大额个体户发票 · 虚开特征典型</h2><span class="badge crimson">刑事风险</span><span class="num">1/5</span></div>
+128|  <div class="mega">
+129|    <div class="mega-item"><div class="val crimson">10</div><div class="lab">个体户数量</div></div>
+130|    <div class="mega-item"><div class="val crimson">2,410万</div><div class="lab">虚开票面金额</div></div>
+131|    <div class="mega-item"><div class="val crimson">76.4%</div><div class="lab">占主营业务成本</div></div>
+132|  </div>
+133|  <div class="visual-main">
+134|    <div class="chart-card" style="flex:0.55">
+135|      <div class="ctitle">📍 注册地址地图（同一产业园）</div>
+136|      <svg viewBox="0 0 280 200" style="width:100%;height:100%">
+137|        <rect x="10" y="10" width="120" height="80" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
+138|        <text x="70" y="30" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">某县</text>
+139|        <text x="70" y="48" text-anchor="middle" fill="#94a3b8" font-size="10">振兴大道商用楼</text>
+140|        <text x="70" y="65" text-anchor="middle" fill="#94a3b8" font-size="10">149-153号（连续5间）</text>
+141|        <text x="70" y="82" text-anchor="middle" fill="#ef4444" font-size="10">5家个体户</text>
+142|        <rect x="150" y="10" width="120" height="80" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1"/>
+143|        <text x="210" y="30" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="600">某县</text>
+144|        <text x="210" y="48" text-anchor="middle" fill="#94a3b8" font-size="10">窝城镇商业街</text>
+145|        <text x="210" y="65" text-anchor="middle" fill="#94a3b8" font-size="10">2栋-223至250号</text>
+146|        <text x="210" y="82" text-anchor="middle" fill="#f59e0b" font-size="10">5家个体户</text>
+147|        <!-- 时间线 -->
+148|        <text x="140" y="110" text-anchor="middle" fill="#94a3b8" font-size="11">⏱️ 时间线</text>
+149|        <rect x="40" y="120" width="60" height="30" rx="6" fill="rgba(239,68,68,0.08)"/>
+150|        <text x="70" y="140" text-anchor="middle" fill="#ef4444" font-size="10">2024.04.01-07</text>
+151|        <text x="140" y="140" text-anchor="middle" fill="#94a3b8" font-size="14">→</text>
+152|        <rect x="150" y="120" width="80" height="30" rx="6" fill="rgba(239,68,68,0.08)"/>
+153|        <text x="190" y="140" text-anchor="middle" fill="#ef4444" font-size="10">2025年集中注销</text>
+154|        <text x="140" y="170" text-anchor="middle" fill="#94a3b8" font-size="10">存续仅12-14个月 → 开票完成即注销</text>
+155|      </svg>
+156|    </div>
+157|    <div class="chart-card">
+158|      <div class="ctitle">⚠️ 核心特征（全部命中）</div>
+159|      <svg viewBox="0 0 220 200" style="width:100%;height:100%">
+160|        <rect x="10" y="5" width="200" height="28" rx="5" fill="rgba(220,38,38,0.08)"/>
+161|        <text x="15" y="23" fill="#dc2626" font-size="11">① 园区集群注册，无真实办公地</text>
+162|        <rect x="10" y="38" width="200" height="28" rx="5" fill="rgba(220,38,38,0.08)"/>
+163|        <text x="15" y="56" fill="#dc2626" font-size="11">② 经营者无测绘从业技能</text>
+164|        <rect x="10" y="71" width="200" height="28" rx="5" fill="rgba(220,38,38,0.08)"/>
+165|        <text x="15" y="89" fill="#dc2626" font-size="11">③ 仅向某企业一家开票</text>
+166|        <rect x="10" y="104" width="200" height="28" rx="5" fill="rgba(220,38,38,0.08)"/>
+167|        <text x="15" y="122" fill="#dc2626" font-size="11">④ 一周内集中注册</text>
+168|        <rect x="10" y="137" width="200" height="28" rx="5" fill="rgba(220,38,38,0.08)"/>
+169|        <text x="15" y="155" fill="#dc2626" font-size="11">⑤ 开票毕即注销</text>
+170|        <text x="110" y="185" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="600">虚开发票判定</text>
+171|      </svg>
+172|    </div>
+173|  </div>
+174|  <div class="footer-strip">💬 10个个体户，同一周注册，同一条街，服务内容是"百货"——测绘公司买百货发票当成本，就是虚开</div>
+175|</div>
+176|
+177|<!-- R1-2 虚开后果 -->
+178|<div class="page" data-page="3">
+179|  <div class="top"><h2>📄 虚开发票 · 法律后果</h2><span class="badge crimson">刑事风险</span><span class="num">1/5 · 续</span></div>
+180|  <div class="mega">
+181|    <div class="mega-item"><div class="val crimson">240万+</div><div class="lab">企业所得税补税</div></div>
+182|    <div class="mega-item"><div class="val crimson">0.5-5倍</div><div class="lab">罚款倍数</div></div>
+183|    <div class="mega-item"><div class="val crimson">＞250万</div><div class="lab">刑事追诉标准</div></div>
+184|  </div>
+185|  <div class="visual-main">
+186|    <div class="chart-card full">
+187|      <svg viewBox="0 0 540 200" style="width:100%;height:100%">
+188|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="14">风险连锁反应</text>
+189|        <!-- 链条 -->
+190|        <rect x="20" y="50" width="90" height="60" rx="8" fill="rgba(220,38,38,0.1)" stroke="#dc2626"/>
+191|        <text x="65" y="75" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="600">虚开发票</text>
+192|        <text x="65" y="95" text-anchor="middle" fill="#dc2626" font-size="10">定性：让他人为自己虚开</text>
+193|        <text x="130" y="82" text-anchor="middle" fill="#64748b" font-size="16">→</text>
+194|        <rect x="150" y="50" width="100" height="60" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444"/>
+195|        <text x="200" y="72" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">进项转出</text>
+196|        <text x="200" y="90" text-anchor="middle" fill="#ef4444" font-size="10">补增值税</text>
+197|        <text x="200" y="105" text-anchor="middle" fill="#94a3b8" font-size="9">+滞纳金18.25%/年</text>
+198|        <text x="268" y="82" text-anchor="middle" fill="#64748b" font-size="16">→</text>
+199|        <rect x="288" y="50" width="100" height="60" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444"/>
+200|        <text x="338" y="72" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">所得税补税</text>
+201|        <text x="338" y="90" text-anchor="middle" fill="#ef4444" font-size="10">2,410万×10%≈240万</text>
+202|        <text x="338" y="105" text-anchor="middle" fill="#94a3b8" font-size="9">高新15%→小微?成本不认</text>
+203|        <text x="406" y="82" text-anchor="middle" fill="#64748b" font-size="16">→</text>
+204|        <rect x="426" y="50" width="100" height="60" rx="8" fill="rgba(220,38,38,0.12)" stroke="#dc2626" stroke-width="2"/>
+205|        <text x="476" y="72" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="600">刑事责任</text>
+206|        <text x="476" y="90" text-anchor="middle" fill="#dc2626" font-size="10">票面额＞250万</text>
+207|        <text x="476" y="105" text-anchor="middle" fill="#dc2626" font-size="9">追诉</text>
+208|        <!-- 底部 -->
+209|        <rect x="20" y="130" width="500" height="50" rx="8" fill="rgba(220,38,38,0.06)" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,2"/>
+210|        <text x="270" y="152" text-anchor="middle" fill="#dc2626" font-size="13">高企资质取消风险：虚开金额过大 → 取消高新 → 补缴已享受的税收优惠</text>
+211|        <text x="270" y="170" text-anchor="middle" fill="#dc2626" font-size="11">🔴 总敞口：补税+罚款+滞纳金+高企损失 ≈ 500万以上</text>
+212|      </svg>
+213|    </div>
+214|  </div>
+215|  <div class="footer-strip">💬 2,410万虚开，金额是刑事追诉标准（250万）的近10倍。不是补税的问题，是有人要进去的问题</div>
+216|</div>
+217|
+218|<!-- R2 薪酬挂账 -->
+219|<div class="page" data-page="4">
+220|  <div class="top"><h2>💰 薪酬1,089万挂账未发</h2><span class="badge high">高风险</span><span class="num">2/5</span></div>
+221|  <div class="mega">
+222|    <div class="mega-item"><div class="val high">1,605万</div><div class="lab">全年计提薪酬</div></div>
+223|    <div class="mega-item"><div class="val high">516万</div><div class="lab">实际发放</div></div>
+224|    <div class="mega-item"><div class="val high">67.8%</div><div class="lab">挂账率</div></div>
+225|  </div>
+226|  <div class="visual-main">
+227|    <div class="chart-card full">
+228|      <svg viewBox="0 0 540 200" style="width:100%;height:100%">
+229|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="14">薪酬计提 vs 实际发放（万元）</text>
+230|        <!-- 柱对比 -->
+231|        <rect x="80" y="50" width="120" height="100" rx="6" fill="rgba(59,130,246,0.15)"/>
+232|        <text x="140" y="108" text-anchor="middle" fill="#60a5fa" font-size="20" font-weight="700">1,605</text>
+233|        <text x="140" y="135" text-anchor="middle" fill="#94a3b8" font-size="12">计提</text>
+234|        <rect x="280" y="110" width="120" height="40" rx="6" fill="rgba(34,197,94,0.15)"/>
+235|        <text x="340" y="135" text-anchor="middle" fill="#22c55e" font-size="16" font-weight="700">516</text>
+236|        <text x="340" y="165" text-anchor="middle" fill="#94a3b8" font-size="12">实际发放</text>
+237|        <text x="240" y="135" text-anchor="middle" fill="#64748b" font-size="14">vs</text>
+238|        <!-- 差值标注 -->
+239|        <path d="M200 80 L280 80" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+240|        <text x="240" y="72" text-anchor="middle" fill="#ef4444" font-size="11">差值1,089万 → 税务纠纷</text>
+241|        <!-- 后果 -->
+242|        <rect x="40" y="180" width="460" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+243|        <text x="270" y="202" text-anchor="middle" fill="#ef4444" font-size="12">未发放部分不得税前扣除 → 汇算清缴应纳税调增</text>
+244|      </svg>
+245|    </div>
+246|  </div>
+247|  <div class="footer-strip">💬 账上列了1,605万工资，实际只发了516万——剩下的1,089万是"空中楼阁"，税务局不认</div>
+248|</div>
+249|
+250|<!-- R3 公私混同 -->
+251|<div class="page" data-page="5">
+252|  <div class="top"><h2>👥 公私往来频繁，控股股东大额借款</h2><span class="badge mid">中等风险</span><span class="num">3/5</span></div>
+253|  <div class="mega">
+254|    <div class="mega-item"><div class="val mid">1,604万</div><div class="lab">大股东（持股91.8%）全年借入</div></div>
+255|    <div class="mega-item"><div class="val mid">2,679万</div><div class="lab">法定代表人其他应付款(年初)</div></div>
+256|    <div class="mega-item"><div class="val info">50万</div><div class="lab">其他应收款未归还余额</div></div>
+257|  </div>
+258|  <div class="visual-main">
+259|    <div class="chart-card full">
+260|      <svg viewBox="0 0 540 200" style="width:100%;height:100%">
+261|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="14">资金流向图</text>
+262|        <!-- 公司 -->
+263|        <rect x="20" y="50" width="100" height="50" rx="8" fill="rgba(96,165,250,0.12)" stroke="#60a5fa"/>
+264|        <text x="70" y="70" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="600">某测绘企业</text>
+265|        <text x="70" y="88" text-anchor="middle" fill="#94a3b8" font-size="10">公司账户</text>
+266|        <!-- 大股东（持股91.8%） -->
+267|        <path d="M120 75 L180 75" stroke="#ef4444" stroke-width="2" marker-end="url(#arw)"/>
+268|        <defs><marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#64748b"/></marker></defs>
+269|        <rect x="185" y="40" width="140" height="50" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5"/>
+270|        <text x="255" y="58" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">大股东（持股91.8%）（控股91.8%）</text>
+271|        <text x="255" y="78" text-anchor="middle" fill="#ef4444" font-size="11">借入1,604万 · 还款1,566万</text>
+272|        <!-- 法定代表人 -->
+273|        <path d="M120 85 L185 100" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arw)"/>
+274|        <rect x="185" y="90" width="140" height="50" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+275|        <text x="255" y="108" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="600">法定代表人（法人）</text>
+276|        <text x="255" y="128" text-anchor="middle" fill="#f59e0b" font-size="11">借入378万 · 其他应付款2,679万</text>
+277|        <!-- 风险 -->
+278|        <rect x="350" y="50" width="175" height="90" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+279|        <text x="437" y="72" text-anchor="middle" fill="#ef4444" font-size="11">风险</text>
+280|        <text x="437" y="92" text-anchor="middle" fill="#ef4444" font-size="11">大股东（持股91.8%）50万未归还</text>
+281|        <text x="437" y="110" text-anchor="middle" fill="#ef4444" font-size="11">→ 视同分红个税10万</text>
+282|        <text x="437" y="130" text-anchor="middle" fill="#ef4444" font-size="11">刺破公司面纱风险</text>
+283|      </svg>
+284|    </div>
+285|  </div>
+286|  <div class="footer-strip">💬 老板从公司拿了1,604万又还了回去，年底还有50万挂了账——税务局不会觉得这是"借"，会认为是"分红"</div>
+287|</div>
+288|
+289|<!-- R4 应收占比 -->
+290|<div class="page" data-page="6">
+291|  <div class="top"><h2>🎯 应收账款占比过高</h2><span class="badge mid">中等风险</span><span class="num">4/5</span></div>
+292|  <div class="mega">
+293|    <div class="mega-item"><div class="val high">75%</div><div class="lab">应收/总资产</div></div>
+294|    <div class="mega-item"><div class="val mid">71.2%</div><div class="lab">应收/收入比</div></div>
+295|    <div class="mega-item"><div class="val info">＞8个月</div><div class="lab">平均回款周期</div></div>
+296|  </div>
+297|  <div class="visual-main">
+298|    <div class="chart-card" style="flex:0.55">
+299|      <div class="ctitle">📊 应收账款结构</div>
+300|      <svg viewBox="0 0 260 200" style="width:100%;height:100%">
+301|        <rect x="10" y="20" width="230" height="35" rx="6" fill="rgba(59,130,246,0.15)"/>
+302|        <text x="125" y="43" text-anchor="middle" fill="#60a5fa" font-size="12">主要客户（央企） 876万</text>
+303|        <rect x="10" y="60" width="180" height="35" rx="6" fill="rgba(96,165,250,0.1)"/>
+304|        <text x="100" y="83" text-anchor="middle" fill="#60a5fa" font-size="12">主要客户B 467万</text>
+305|        <rect x="10" y="100" width="140" height="35" rx="6" fill="rgba(96,165,250,0.08)"/>
+306|        <text x="80" y="123" text-anchor="middle" fill="#60a5fa" font-size="12">主要客户C 225万</text>
+307|        <text x="10" y="160" fill="#94a3b8" font-size="11">前五大客户占总应收 55%</text>
+308|        <text x="10" y="180" fill="#94a3b8" font-size="11">应收总额 2,950万</text>
+309|      </svg>
+310|    </div>
+311|    <div class="chart-card">
+312|      <div class="ctitle">⚡ 连锁风险</div>
+313|      <svg viewBox="0 0 200 200" style="width:100%;height:100%">
+314|        <rect x="30" y="10" width="140" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+315|        <text x="100" y="33" text-anchor="middle" fill="#ef4444" font-size="12">坏账准备计提不足</text>
+316|        <text x="100" y="55" text-anchor="middle" fill="#64748b" font-size="14">↓</text>
+317|        <rect x="30" y="65" width="140" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+318|        <text x="100" y="88" text-anchor="middle" fill="#ef4444" font-size="12">账面利润虚增</text>
+319|        <text x="100" y="110" text-anchor="middle" fill="#64748b" font-size="14">↓</text>
+320|        <rect x="30" y="120" width="140" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+321|        <text x="100" y="143" text-anchor="middle" fill="#ef4444" font-size="12">基建投资降速 → 违约风险</text>
+322|      </svg>
+323|    </div>
+324|  </div>
+325|  <div class="footer-strip">💬 钱没收回来但算做了利润——税务局让你交税的时候，你拿什么交？</div>
+326|</div>
+327|
+328|<!-- R5 账务混乱 + 总结 -->
+329|<div class="page" data-page="7">
+330|  <div class="top"><h2>📋 账务混乱 + 诊断总结</h2><span class="badge mid">中等风险</span><span class="num">5/5</span></div>
+331|  <div class="mega">
+332|    <div class="mega-item"><div class="val mid">多笔</div><div class="lab">调账·冲减非标准分录</div></div>
+333|    <div class="mega-item"><div class="val mid">262万</div><div class="lab">库存商品无明细</div></div>
+334|    <div class="mega-item"><div class="val info">不规范</div><div class="lab">成本费用划分不清</div></div>
+335|  </div>
+336|  <div class="visual-main">
+337|    <div class="chart-card">
+338|      <div class="ctitle">🔴 优先处理（本月）</div>
+339|      <svg viewBox="0 0 240 190" style="width:100%;height:100%">
+340|        <rect x="10" y="10" width="220" height="35" rx="6" fill="rgba(220,38,38,0.1)"/>
+341|        <text x="120" y="33" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="600">① 个体户发票全面清理</text>
+342|        <text x="120" y="52" text-anchor="middle" fill="#94a3b8" font-size="10">10家个体户逐一追溯，准备自首材料</text>
+343|        <rect x="10" y="65" width="220" height="35" rx="6" fill="rgba(239,68,68,0.08)"/>
+344|        <text x="120" y="88" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">② 薪酬挂账核实</text>
+345|        <text x="120" y="107" text-anchor="middle" fill="#94a3b8" font-size="10">查1,089万未发薪酬的真实去向</text>
+346|        <rect x="10" y="120" width="220" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+347|        <text x="120" y="143" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">③ 大额往来清理</text>
+348|        <text x="120" y="162" text-anchor="middle" fill="#94a3b8" font-size="10">大股东（持股91.8%）50万→还清或补个税</text>
+349|      </svg>
+350|    </div>
+351|    <div class="chart-card">
+352|      <div class="ctitle">🟠 次优先 + 一句话</div>
+353|      <svg viewBox="0 0 240 190" style="width:100%;height:100%">
+354|        <text x="15" y="30" fill="#94a3b8" font-size="12">④ 应收账款坏账准备检查</text>
+355|        <text x="15" y="50" fill="#94a3b8" font-size="12">⑤ 账务规范：停用调账分录</text>
+356|        <text x="15" y="70" fill="#94a3b8" font-size="12">⑥ 库存商品262万建明细账</text>
+357|        <rect x="10" y="95" width="220" height="1" fill="rgba(148,163,184,0.1)"/>
+358|        <rect x="10" y="110" width="220" height="65" rx="8" fill="rgba(96,165,250,0.06)"/>
+359|        <text x="120" y="135" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="500">💡 一句话</text>
+360|        <text x="120" y="158" text-anchor="middle" fill="#93c5fd" font-size="12">"虚开发票的事不解决，其他都是白搭。先保人，再补税，再理账。"</text>
+361|      </svg>
+362|    </div>
+363|  </div>
+364|  <div class="footer-strip">💡 核心是虚开——2,410万的虚开金额不是补税问题，是刑事问题。建议立即做合规自首</div>
+365|</div>
+366|
+367|</div>
+368|
+369|<div class="nav-bar">
+370|  <button class="nav-btn" id="prevBtn" onclick="prevPage()">‹</button>
+371|  <div class="dots" id="dots"></div>
+372|  <button class="nav-btn" id="nextBtn" onclick="nextPage()">›</button>
+373|</div>
+374|
+375|<script>
+376|const pages = document.querySelectorAll('.page'), total = pages.length;
+377|let cur = 0;
+378|const dc = document.getElementById('dots');
+379|for(let i=0;i<total;i++){let d=document.createElement('button');d.className='dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dc.appendChild(d)}
+380|function goTo(n){
+381|  pages.forEach((p,i)=>{p.classList.toggle('active',i===n);p.classList.toggle('prev',i<n)});
+382|  cur=n;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+383|  document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').disabled=n===total-1;
+384|}
+385|function nextPage(){if(cur<total-1) goTo(cur+1)}
+386|function prevPage(){if(cur>0) goTo(cur-1)}
+387|document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown') nextPage();if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevPage()});
+388|</script>
+389|</body>
+390|</html>
+391|

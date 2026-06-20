@@ -1,0 +1,447 @@
+1|<!DOCTYPE html>
+2|<html lang="zh-CN">
+3|<head>
+4|<meta charset="UTF-8">
+5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
+6|<title>某耐火材料企业 · 财税风险诊断</title>
+7|<style>
+8|*{margin:0;padding:0;box-sizing:border-box}
+9|body{background:#0f172a;font-family:'PingFang SC','Microsoft YaHei',sans-serif;color:#e2e8f0;overflow:hidden;height:100vh}
+10|
+11|.flip-book{width:100%;height:100vh;position:relative}
+12|.page{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;padding:40px 56px 72px;opacity:0;transition:opacity .35s,transform .35s;transform:translateX(50px);overflow-y:auto}
+13|.page.active{opacity:1;transform:translateX(0);z-index:2}
+14|.page.prev{opacity:0;transform:translateX(-50px);z-index:1}
+15|
+16|/* ====== 封面 ====== */
+17|.cover{justify-content:center;align-items:center;text-align:center;padding:60px}
+18|.cover h1{font-size:56px;font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+19|.cover .sub{font-size:18px;color:#94a3b8;margin-bottom:32px}
+20|.cover .meta{font-size:13px;color:#64748b;margin-bottom:40px}
+21|.cover .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:600px;margin:0 auto 40px}
+22|.cover .stat{background:rgba(30,41,59,0.6);border-radius:14px;padding:20px 12px;border:1px solid rgba(148,163,184,0.08)}
+23|.cover .stat .n{font-size:28px;font-weight:700}
+24|.cover .stat .l{font-size:12px;color:#64748b;margin-top:2px}
+25|.start-btn{padding:14px 52px;border-radius:30px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;color:#fff;font-size:16px;cursor:pointer}
+26|
+27|/* ====== 页面通用 ====== */
+28|.top{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-shrink:0}
+29|.top h2{font-size:18px;font-weight:600}
+30|.top .badge{padding:2px 12px;border-radius:12px;font-size:11px;font-weight:500}
+31|.badge.high{background:rgba(239,68,68,0.15);color:#ef4444}
+32|.badge.mid{background:rgba(245,158,11,0.15);color:#f59e0b}
+33|.badge.low{background:rgba(34,197,94,0.15);color:#22c55e}
+34|.top .num{font-size:13px;color:#64748b;margin-left:auto}
+35|
+36|/* 巨型数字 */
+37|.mega{display:flex;gap:16px;margin-bottom:16px;flex-shrink:0}
+38|.mega-item{flex:1;background:rgba(30,41,59,0.5);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(148,163,184,0.06)}
+39|.mega-item .val{font-size:42px;font-weight:800;line-height:1.1}
+40|.mega-item .val.high{color:#ef4444}
+41|.mega-item .val.mid{color:#f59e0b}
+42|.mega-item .val.info{color:#60a5fa}
+43|.mega-item .val.green{color:#22c55e}
+44|.mega-item .lab{font-size:12px;color:#94a3b8;margin-top:4px}
+45|
+46|/* 主体区域：图占主导 */
+47|.visual-main{flex:1;display:flex;gap:16px;min-height:0}
+48|
+49|/* 图表卡片 */
+50|.chart-card{background:rgba(30,41,59,0.5);border-radius:16px;padding:20px;border:1px solid rgba(148,163,184,0.06);flex:1;display:flex;flex-direction:column}
+51|.chart-card.full{flex:1}
+52|.chart-card .ctitle{font-size:13px;font-weight:500;color:#94a3b8;margin-bottom:12px}
+53|
+54|/* ====== SVG 图表定义 ====== */
+55|svg text{font-family:'PingFang SC',sans-serif}
+56|
+57|/* ====== 大白话条 ====== */
+58|.footer-strip{margin-top:12px;padding:10px 16px;background:linear-gradient(135deg,rgba(96,165,250,0.1),rgba(167,139,250,0.08));border-radius:10px;font-size:13px;color:#93c5fd;text-align:center;flex-shrink:0}
+59|
+60|/* ====== 导航 ====== */
+61|.nav-bar{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:20px;padding:14px;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-top:1px solid rgba(148,163,184,0.1);z-index:100}
+62|.nav-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(148,163,184,0.15);background:rgba(30,41,59,0.5);color:#e2e8f0;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+63|.nav-btn:disabled{opacity:0.25;cursor:default}
+64|.dots{display:flex;gap:5px}
+65|.dot{width:7px;height:7px;border-radius:50%;background:rgba(148,163,184,0.15);border:none;cursor:pointer}
+66|.dot.active{background:#60a5fa;width:20px;border-radius:3.5px}
+67|
+68|@media(max-width:768px){
+69|  .page{padding:20px 16px 68px}
+70|  .mega{flex-wrap:wrap}
+71|  .mega-item .val{font-size:28px}
+72|  .visual-main{flex-direction:column}
+73|  .cover h1{font-size:32px}
+74|  .cover .grid{grid-template-columns:repeat(3,1fr);gap:8px}
+75|}
+76|</style>
+77|</head>
+78|<body>
+79|
+80|<div class="flip-book" id="book">
+81|
+82|<!-- 封面 -->
+83|<div class="page cover active" data-page="0">
+84|  <h1>🧱 财税风险诊断</h1>
+85|  <div class="sub">某耐火材料贸易企业</div>
+86|  <div class="grid">
+87|    <div class="stat"><div class="n" style="color:#ef4444">7</div><div class="l">核心风险</div></div>
+88|    <div class="stat"><div class="n" style="color:#f59e0b">638万</div><div class="l">往来款净借出</div></div>
+89|    <div class="stat"><div class="n" style="color:#60a5fa">15-17%</div><div class="l">毛利率</div></div>
+90|  </div>
+91|  <div class="meta">已获取：2025全年+2026.01-04 科目余额表、银行明细账</div>
+92|  <button class="start-btn" onclick="goTo(1)">开始 →</button>
+93|</div>
+94|
+95|<!-- 概况 -->
+96|<div class="page" data-page="1">
+97|  <div class="top"><h2>📋 企业概况</h2><span class="num">概况</span></div>
+98|  <div class="mega">
+99|    <div class="mega-item"><div class="val info">15-17%</div><div class="lab">毛利率</div></div>
+100|    <div class="mega-item"><div class="val info">5%</div><div class="lab">所得税率（小微）</div></div>
+101|    <div class="mega-item"><div class="val high">638万</div><div class="lab">往来款净借出</div></div>
+102|    <div class="mega-item"><div class="val mid">696万</div><div class="lab">预付挂账</div></div>
+103|  </div>
+104|  <div class="visual-main">
+105|    <div class="chart-card" style="flex:0.4">
+106|      <div class="ctitle">🎯 风险全景</div>
+107|      <svg viewBox="0 0 200 240" style="width:100%;height:100%">
+108|        <rect x="10" y="10" width="52" height="52" rx="10" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+109|        <text x="36" y="35" text-anchor="middle" fill="#ef4444" font-size="20">🏦</text>
+110|        <text x="36" y="52" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">R1</text>
+111|        <rect x="74" y="10" width="52" height="52" rx="10" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+112|        <text x="100" y="35" text-anchor="middle" fill="#ef4444" font-size="20">👥</text>
+113|        <text x="100" y="52" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">R2</text>
+114|        <rect x="138" y="10" width="52" height="52" rx="10" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+115|        <text x="164" y="35" text-anchor="middle" fill="#f59e0b" font-size="20">📊</text>
+116|        <text x="164" y="52" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R3</text>
+117|        <rect x="10" y="74" width="52" height="52" rx="10" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+118|        <text x="36" y="99" text-anchor="middle" fill="#f59e0b" font-size="20">💰</text>
+119|        <text x="36" y="116" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R4</text>
+120|        <rect x="74" y="74" width="52" height="52" rx="10" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+121|        <text x="100" y="99" text-anchor="middle" fill="#f59e0b" font-size="20">🚗</text>
+122|        <text x="100" y="116" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R5</text>
+123|        <rect x="138" y="74" width="52" height="52" rx="10" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+124|        <text x="164" y="99" text-anchor="middle" fill="#ef4444" font-size="20">📦</text>
+125|        <text x="164" y="116" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">R6</text>
+126|        <rect x="10" y="138" width="52" height="52" rx="10" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+127|        <text x="36" y="163" text-anchor="middle" fill="#f59e0b" font-size="20">🎯</text>
+128|        <text x="36" y="180" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R7</text>
+129|      </svg>
+130|    </div>
+131|    <div class="chart-card">
+132|      <div class="ctitle">🏢 企业画像</div>
+133|      <svg viewBox="0 0 280 240" style="width:100%;height:100%">
+134|        <text x="10" y="20" fill="#94a3b8" font-size="11">贸易型企业·耐火材料·以销定购</text>
+135|        <text x="10" y="40" fill="#94a3b8" font-size="11">年利润：薄利·2026年扭亏</text>
+136|        <text x="10" y="60" fill="#94a3b8" font-size="11">下游：钢铁·建材·强周期</text>
+137|        <rect x="10" y="80" width="260" height="30" rx="6" fill="rgba(96,165,250,0.08)"/>
+138|        <text x="140" y="99" text-anchor="middle" fill="#60a5fa" font-size="12">✅ 小型微利企业（335条件）→ 5%所得税率</text>
+139|      </svg>
+140|    </div>
+141|  </div>
+142|  <div class="footer-strip">💡 业务真实但财务基础薄弱。这不是恶意违规，是野蛮生长到规范管理的转型阵痛</div>
+143|</div>
+144|
+145|<!-- R1 银行流水 -->
+146|<div class="page" data-page="2">
+147|  <div class="top"><h2>🏦 银行流水异常</h2><span class="badge high">极高风险</span><span class="num">1/7</span></div>
+148|  <div class="mega">
+149|    <div class="mega-item"><div class="val high">53</div><div class="lab">过桥资金·同日同金额</div></div>
+150|    <div class="mega-item"><div class="val high">105万</div><div class="lab">现金取现</div></div>
+151|    <div class="mega-item"><div class="val mid">52%</div><div class="lab">摘要模糊占比</div></div>
+152|  </div>
+153|  <div class="visual-main">
+154|    <div class="chart-card full">
+155|      <svg viewBox="0 0 540 200" style="width:100%;height:100%">
+156|        <!-- 资金流向图 -->
+157|        <text x="270" y="20" text-anchor="middle" fill="#94a3b8" font-size="13">资金流示意</text>
+158|        <rect x="10" y="40" width="80" height="50" rx="8" fill="rgba(96,165,250,0.12)" stroke="#60a5fa"/>
+159|        <text x="50" y="60" text-anchor="middle" fill="#60a5fa" font-size="11">公司账户</text>
+160|        <text x="50" y="78" text-anchor="middle" fill="#94a3b8" font-size="10">建行+农商行</text>
+161|        <path d="M95 65 L135 65" stroke="#64748b" stroke-width="2" marker-end="url(#arw)"/>
+162|        <defs><marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#64748b"/></marker></defs>
+163|        <rect x="140" y="40" width="70" height="50" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+164|        <text x="175" y="60" text-anchor="middle" fill="#ef4444" font-size="11">第三方</text>
+165|        <text x="175" y="78" text-anchor="middle" fill="#94a3b8" font-size="10">过桥53对</text>
+166|        <path d="M175 90 L175 120 L50 120 L50 95" stroke="#f59e0b" stroke-width="1.5" fill="none" stroke-dasharray="3,2" marker-end="url(#arw)"/>
+167|        <text x="115" y="135" text-anchor="middle" fill="#f59e0b" font-size="10">无回流 638万</text>
+168|        <rect x="220" y="40" width="70" height="50" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2"/>
+169|        <text x="255" y="60" text-anchor="middle" fill="#f59e0b" font-size="11">现金</text>
+170|        <text x="255" y="78" text-anchor="middle" fill="#94a3b8" font-size="10">取现105万</text>
+171|        <path d="M90 90 L255 90" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arw)"/>
+172|        <rect x="310" y="40" width="70" height="50" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+173|        <text x="345" y="60" text-anchor="middle" fill="#ef4444" font-size="11">控股股东（持股X%）</text>
+174|        <text x="345" y="78" text-anchor="middle" fill="#94a3b8" font-size="10">个人37笔</text>
+175|        <path d="M90 90 L345 90" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arw)"/>
+176|        <!-- 风险警示 -->
+177|        <rect x="10" y="155" width="160" height="35" rx="6" fill="rgba(239,68,68,0.08)"/>
+178|        <text x="90" y="177" text-anchor="middle" fill="#ef4444" font-size="11">💰 个税风险 ≈ 80万</text>
+179|        <rect x="185" y="155" width="170" height="35" rx="6" fill="rgba(239,68,68,0.06)"/>
+180|        <text x="270" y="177" text-anchor="middle" fill="#ef4444" font-size="11">法人人格否认 → 无限连带</text>
+181|      </svg>
+182|    </div>
+183|  </div>
+184|  <div class="footer-strip">💬 银行账户像公共汽车——谁都能上，上了就下，查不出去了哪</div>
+185|</div>
+186|
+187|<!-- R2 股东混同 -->
+188|<div class="page" data-page="3">
+189|  <div class="top"><h2>👥 股东资金混同 + 债转股存疑</h2><span class="badge high">极高风险</span><span class="num">2/7</span></div>
+190|  <div class="mega">
+191|    <div class="mega-item"><div class="val high">581万→0</div><div class="lab">控股股东（持股X%）其他应付款</div></div>
+192|    <div class="mega-item"><div class="val green">+769万</div><div class="lab">实收资本增加</div></div>
+193|    <div class="mega-item"><div class="val mid">0</div><div class="lab">验资报告</div></div>
+194|  </div>
+195|  <div class="visual-main">
+196|    <div class="chart-card" style="flex:0.55">
+197|      <div class="ctitle">📊 账务变化图</div>
+198|      <svg viewBox="0 0 280 170" style="width:100%;height:100%">
+199|        <rect x="10" y="75" width="70" height="80" rx="6" fill="rgba(59,130,246,0.15)"/>
+200|        <text x="45" y="108" text-anchor="middle" fill="#60a5fa" font-size="22" font-weight="700">581</text>
+201|        <text x="45" y="130" text-anchor="middle" fill="#94a3b8" font-size="10">年初 其他应付款</text>
+202|        <rect x="105" y="155" width="70" height="0" rx="6" fill="rgba(34,197,94,0.15)"/>
+203|        <text x="140" y="170" text-anchor="middle" fill="#94a3b8" font-size="10">年末 → 0</text>
+204|        <rect x="200" y="50" width="70" height="105" rx="6" fill="rgba(167,139,250,0.15)"/>
+205|        <text x="235" y="108" text-anchor="middle" fill="#a78bfa" font-size="22" font-weight="700">769</text>
+206|        <text x="235" y="130" text-anchor="middle" fill="#94a3b8" font-size="10">实收资本增加</text>
+207|      </svg>
+208|    </div>
+209|    <div class="chart-card">
+210|      <div class="ctitle">⚖️ 核心问题</div>
+211|      <svg viewBox="0 0 220 170" style="width:100%;height:100%">
+212|        <rect x="10" y="10" width="200" height="30" rx="6" fill="rgba(239,68,68,0.08)"/>
+213|        <text x="110" y="30" text-anchor="middle" fill="#ef4444" font-size="12">债转股 → 缺验资/评估/章程修正</text>
+214|        <rect x="10" y="50" width="200" height="30" rx="6" fill="rgba(239,68,68,0.06)"/>
+215|        <text x="110" y="70" text-anchor="middle" fill="#ef4444" font-size="12">出资不实 → 769万补充赔偿责任</text>
+216|        <rect x="10" y="90" width="200" height="30" rx="6" fill="rgba(239,68,68,0.08)"/>
+217|        <text x="110" y="110" text-anchor="middle" fill="#ef4444" font-size="12">资金混同 → 刺破公司面纱</text>
+218|        <rect x="10" y="130" width="200" height="30" rx="6" fill="rgba(245,158,11,0.08)"/>
+219|        <text x="110" y="150" text-anchor="middle" fill="#f59e0b" font-size="12">个人净流入173万 → 个税风险</text>
+220|      </svg>
+221|    </div>
+222|  </div>
+223|  <div class="footer-strip">💬 股东借给公司的钱一转就成了注册资本。程序不到位，769万就是个坑</div>
+224|</div>
+225|
+226|<!-- R3 税负率 -->
+227|<div class="page" data-page="4">
+228|  <div class="top"><h2>📊 增值税税负率偏低</h2><span class="badge mid">中等风险</span><span class="num">3/7</span></div>
+229|  <div class="mega">
+230|    <div class="mega-item"><div class="val mid">↓</div><div class="lab">税负（行业偏低）</div></div>
+231|    <div class="mega-item"><div class="val info">自动比对</div><div class="lab">金税四期同行业均值</div></div>
+232|    <div class="mega-item"><div class="val info">约谈风险</div><div class="lab">低于阈值自动推送</div></div>
+233|  </div>
+234|  <div class="visual-main">
+235|    <div class="chart-card full">
+236|      <svg viewBox="0 0 540 180" style="width:100%;height:100%">
+237|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="13">税负率对比</text>
+238|        <!-- 柱状图 -->
+239|        <rect x="100" y="100" width="100" height="50" rx="4" fill="rgba(245,158,11,0.2)" stroke="#f59e0b"/>
+240|        <text x="150" y="118" text-anchor="middle" fill="#f59e0b" font-size="13" font-weight="600">1.2%</text>
+241|        <text x="150" y="165" text-anchor="middle" fill="#94a3b8" font-size="11">公司税负率</text>
+242|        <rect x="250" y="60" width="100" height="90" rx="4" fill="rgba(96,165,250,0.12)" stroke="#60a5fa"/>
+243|        <text x="300" y="108" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="600">1.8-2.5%</text>
+244|        <text x="300" y="165" text-anchor="middle" fill="#94a3b8" font-size="11">行业均值</text>
+245|        <text x="230" y="135" text-anchor="middle" fill="#64748b" font-size="10">↓ 偏低</text>
+246|        <!-- 预警信号 -->
+247|        <rect x="420" y="60" width="110" height="90" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+248|        <text x="475" y="105" text-anchor="middle" fill="#ef4444" font-size="24">⚠️</text>
+249|        <text x="475" y="130" text-anchor="middle" fill="#ef4444" font-size="12">金税预警阈值</text>
+250|      </svg>
+251|    </div>
+252|  </div>
+253|  <div class="footer-strip">💬 不是现在有事，但金税四期每季度自动比对。低了就是红灯，税务局迟早会来问</div>
+254|</div>
+255|
+256|<!-- R4 预付账款 -->
+257|<div class="page" data-page="5">
+258|  <div class="top"><h2>💰 大额预付账款长期挂账</h2><span class="badge mid">中等风险</span><span class="num">4/7</span></div>
+259|  <div class="mega">
+260|    <div class="mega-item"><div class="val high">696万</div><div class="lab">预付挂账总额</div></div>
+261|    <div class="mega-item"><div class="val mid">388万</div><div class="lab">4-6个月不动</div></div>
+262|    <div class="mega-item"><div class="val mid">220万</div><div class="lab">个体户风险敞口</div></div>
+263|  </div>
+264|  <div class="visual-main">
+265|    <div class="chart-card full">
+266|      <svg viewBox="0 0 540 180" style="width:100%;height:100%">
+267|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="13">预付账款构成（万元）</text>
+268|        <rect x="40" y="50" width="460" height="40" rx="6" fill="rgba(96,165,250,0.1)"/>
+269|        <text x="100" y="75" text-anchor="middle" fill="#60a5fa" font-size="12">常规预付</text>
+270|        <rect x="210" y="50" width="120" height="40" rx="6" fill="rgba(245,158,11,0.15)"/>
+271|        <text x="270" y="75" text-anchor="middle" fill="#f59e0b" font-size="12">个体户 220万</text>
+272|        <rect x="340" y="50" width="80" height="40" rx="6" fill="rgba(239,68,68,0.1)"/>
+273|        <text x="380" y="75" text-anchor="middle" fill="#ef4444" font-size="12">劳务 113万</text>
+274|        <text x="100" y="105" text-anchor="middle" fill="#64748b" font-size="10">总696万</text>
+275|        <text x="270" y="105" text-anchor="middle" fill="#f59e0b" font-size="10">无发票风险</text>
+276|        <text x="380" y="105" text-anchor="middle" fill="#ef4444" font-size="10">虚开风险</text>
+277|        <rect x="40" y="130" width="460" height="35" rx="6" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2"/>
+278|        <text x="270" y="152" text-anchor="middle" fill="#ef4444" font-size="12">4-6个月不动 → 实质已形成坏账，但未做资产减值</text>
+279|      </svg>
+280|    </div>
+281|  </div>
+282|  <div class="footer-strip">💬 钱付了货没到，发票也没拿。税务局眼里这等于"钱出去了，说不清去哪了"</div>
+283|</div>
+284|
+285|<!-- R5 豪车 -->
+286|<div class="page" data-page="6">
+287|  <div class="top"><h2>🚗 进口豪车公私混用</h2><span class="badge mid">中等风险</span><span class="num">5/7</span></div>
+288|  <div class="mega">
+289|    <div class="mega-item"><div class="val mid">72.2万</div><div class="lab">平纳克尔进口越野车</div></div>
+290|    <div class="mega-item"><div class="val info">6辆</div><div class="lab">车队总车辆</div></div>
+291|    <div class="mega-item"><div class="val high">~32万</div><div class="lab">预估税务损失</div></div>
+292|  </div>
+293|  <div class="visual-main">
+294|    <div class="chart-card full">
+295|      <svg viewBox="0 0 540 180" style="width:100%;height:100%">
+296|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="13">商业合理性对比</text>
+297|        <rect x="20" y="45" width="150" height="50" rx="10" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+298|        <text x="95" y="65" text-anchor="middle" fill="#ef4444" font-size="28">🚗</text>
+299|        <text x="95" y="85" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">车价 72.2万</text>
+300|        <text x="195" y="72" text-anchor="middle" fill="#64748b" font-size="18">↔</text>
+301|        <rect x="210" y="45" width="150" height="50" rx="10" fill="rgba(96,165,250,0.08)" stroke="#60a5fa" stroke-width="1.5"/>
+302|        <text x="285" y="65" text-anchor="middle" fill="#60a5fa" font-size="28">🏭</text>
+303|        <text x="285" y="85" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="600">年利润 几十万</text>
+304|        <text x="385" y="72" text-anchor="middle" fill="#64748b" font-size="18">≠</text>
+305|        <!-- 风险拆分 -->
+306|        <rect x="30" y="115" width="150" height="45" rx="6" fill="rgba(239,68,68,0.06)"/>
+307|        <text x="105" y="134" text-anchor="middle" fill="#ef4444" font-size="11">个税（视同分红）≈14.4万</text>
+308|        <text x="105" y="150" text-anchor="middle" fill="#94a3b8" font-size="10">财税[2003]158号</text>
+309|        <rect x="195" y="115" width="150" height="45" rx="6" fill="rgba(239,68,68,0.06)"/>
+310|        <text x="270" y="134" text-anchor="middle" fill="#ef4444" font-size="11">进项税转出 ≈9.4万</text>
+311|        <text x="270" y="150" text-anchor="middle" fill="#94a3b8" font-size="10">增值税暂行条例第10条</text>
+312|        <rect x="360" y="115" width="150" height="45" rx="6" fill="rgba(245,158,11,0.06)"/>
+313|        <text x="435" y="134" text-anchor="middle" fill="#f59e0b" font-size="11">所得税调增</text>
+314|        <text x="435" y="150" text-anchor="middle" fill="#94a3b8" font-size="10">企业所得税法第8条</text>
+315|      </svg>
+316|    </div>
+317|  </div>
+318|  <div class="footer-strip">💬 年赚几十万开80万的车。税务局眼里这不是公司需要，是股东享受</div>
+319|</div>
+320|
+321|<!-- R6 存货 -->
+322|<div class="page" data-page="7">
+323|  <div class="top"><h2>📦 存货账面为零，账实不符</h2><span class="badge high">极高风险</span><span class="num">6/7</span></div>
+324|  <div class="mega">
+325|    <div class="mega-item"><div class="val high">0</div><div class="lab">账面存货</div></div>
+326|    <div class="mega-item"><div class="val high">?</div><div class="lab">实际库存</div></div>
+327|    <div class="mega-item"><div class="val high">95%</div><div class="lab">被稽查概率</div></div>
+328|  </div>
+329|  <div class="visual-main">
+330|    <div class="chart-card full">
+331|      <svg viewBox="0 0 540 180" style="width:100%;height:100%">
+332|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="13">账实对比</text>
+333|        <!-- 账面 -->
+334|        <rect x="30" y="45" width="200" height="80" rx="10" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="2"/>
+335|        <text x="130" y="60" text-anchor="middle" fill="#ef4444" font-size="12">📋 账面</text>
+336|        <text x="130" y="95" text-anchor="middle" fill="#ef4444" font-size="36" font-weight="800">0</text>
+337|        <text x="130" y="115" text-anchor="middle" fill="#94a3b8" font-size="11">期末存货</text>
+338|        <!-- 箭头 -->
+339|        <text x="240" y="88" text-anchor="middle" fill="#64748b" font-size="24">≠</text>
+340|        <!-- 实际 -->
+341|        <rect x="270" y="45" width="200" height="80" rx="10" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="2"/>
+342|        <text x="370" y="60" text-anchor="middle" fill="#22c55e" font-size="12">🏭 仓库实际</text>
+343|        <text x="370" y="95" text-anchor="middle" fill="#22c55e" font-size="36" font-weight="800">?</text>
+344|        <text x="370" y="115" text-anchor="middle" fill="#94a3b8" font-size="11">有货但未入账</text>
+345|        <!-- 后果 -->
+346|        <rect x="30" y="140" width="480" height="30" rx="6" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2"/>
+347|        <text x="270" y="160" text-anchor="middle" fill="#ef4444" font-size="12">金税四期：进销存不匹配 → 自动预警 → 税务稽查</text>
+348|      </svg>
+349|    </div>
+350|  </div>
+351|  <div class="footer-strip">💬 仓库堆着货，账上写"没货"。税务局一问"那你卖的东西哪来的？"——答不上来</div>
+352|</div>
+353|
+354|<!-- R7 客户集中 -->
+355|<div class="page" data-page="8">
+356|  <div class="top"><h2>🎯 客户高度集中</h2><span class="badge mid">中等风险</span><span class="num">7/7</span></div>
+357|  <div class="mega">
+358|    <div class="mega-item"><div class="val high">＞100%</div><div class="lab">主要客户（建筑施工企业）占比</div></div>
+359|    <div class="mega-item"><div class="val mid">强周期</div><div class="lab">下游：钢铁·建材</div></div>
+360|    <div class="mega-item"><div class="val info">长账期</div><div class="lab">建筑企业6-12月回款</div></div>
+361|  </div>
+362|  <div class="visual-main">
+363|    <div class="chart-card full">
+364|      <svg viewBox="0 0 540 180" style="width:100%;height:100%">
+365|        <text x="270" y="25" text-anchor="middle" fill="#94a3b8" font-size="13">客户结构图</text>
+366|        <!-- 大饼 -->
+367|        <circle cx="270" cy="100" r="60" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="2"/>
+368|        <text x="270" y="95" text-anchor="middle" fill="#f59e0b" font-size="24" font-weight="700">＞100%</text>
+369|        <text x="270" y="115" text-anchor="middle" fill="#94a3b8" font-size="11">主要客户（建筑施工企业）</text>
+370|        <!-- 影响 -->
+371|        <text x="350" y="60" fill="#94a3b8" font-size="11">连锁反应：</text>
+372|        <text x="350" y="80" fill="#ef4444" font-size="11">东恩拖欠 → 公司资金紧张</text>
+373|        <text x="350" y="98" fill="#ef4444" font-size="11">→ 无法付供应商</text>
+374|        <text x="350" y="116" fill="#ef4444" font-size="11">→ 多米诺骨牌</text>
+375|      </svg>
+376|    </div>
+377|  </div>
+378|  <div class="footer-strip">💬 只有一个大客户，它倒了你也倒了。不是财税问题，是商业模式问题</div>
+379|</div>
+380|
+381|<!-- 总结 -->
+382|<div class="page" data-page="9">
+383|  <div class="top"><h2>✅ 总结与行动建议</h2><span class="num">总结</span></div>
+384|  <div class="mega">
+385|    <div class="mega-item"><div class="val high">3</div><div class="lab">本月内必处理</div></div>
+386|    <div class="mega-item"><div class="val mid">3</div><div class="lab">季度内处理</div></div>
+387|    <div class="mega-item"><div class="val info">6</div><div class="lab">需要的补充资料</div></div>
+388|  </div>
+389|  <div class="visual-main">
+390|    <div class="chart-card">
+391|      <div class="ctitle">🔴 本月内（建议顺序）</div>
+392|      <svg viewBox="0 0 240 160" style="width:100%;height:100%">
+393|        <text x="15" y="30" fill="#ef4444" font-size="13">① 存货盘点</text>
+394|        <text x="25" y="50" fill="#94a3b8" font-size="10">建立进销存台账</text>
+395|        <text x="15" y="75" fill="#f59e0b" font-size="13">② 流水梳理</text>
+396|        <text x="25" y="95" fill="#94a3b8" font-size="10">53笔过桥资金逐一追溯</text>
+397|        <text x="15" y="120" fill="#60a5fa" font-size="13">③ 债转股合规</text>
+398|        <text x="25" y="140" fill="#94a3b8" font-size="10">补评估→章程修正→工商变更</text>
+399|      </svg>
+400|    </div>
+401|    <div class="chart-card">
+402|      <div class="ctitle">🟠 季度内 + 📋 补充资料</div>
+403|      <svg viewBox="0 0 240 160" style="width:100%;height:100%">
+404|        <text x="15" y="30" fill="#94a3b8" font-size="11">① 预付账款清理</text>
+405|        <text x="15" y="50" fill="#94a3b8" font-size="11">② 豪车使用安排</text>
+406|        <text x="15" y="70" fill="#94a3b8" font-size="11">③ 税负率自查</text>
+407|        <rect x="10" y="85" width="220" height="1" fill="rgba(148,163,184,0.1)"/>
+408|        <text x="15" y="105" fill="#94a3b8" font-size="11">需要补充：</text>
+409|        <text x="15" y="125" fill="#94a3b8" font-size="10">进销存台账·序时账</text>
+410|        <text x="15" y="143" fill="#94a3b8" font-size="10">纳税申报表·购销合同</text>
+411|      </svg>
+412|    </div>
+413|    <div class="chart-card" style="flex:0.6">
+414|      <div class="ctitle">💡 一句话建议</div>
+415|      <div style="display:flex;align-items:center;justify-content:center;height:100%">
+416|        <p style="color:#93c5fd;font-size:14px;line-height:1.8;text-align:center;padding:10px">"公司业务是好的，账是乱的。<br>前3个（存货·流水·债转股）是定时炸弹，<br>先拆这三颗，后面的慢慢理。"</p>
+417|      </div>
+418|    </div>
+419|  </div>
+420|  <div class="footer-strip">💡 诊断做完了，效果取决于落地。建议拿这个去跟老板谈——先解决能解决的，不贪多求全</div>
+421|</div>
+422|
+423|</div>
+424|
+425|<div class="nav-bar">
+426|  <button class="nav-btn" id="prevBtn" onclick="prevPage()">‹</button>
+427|  <div class="dots" id="dots"></div>
+428|  <button class="nav-btn" id="nextBtn" onclick="nextPage()">›</button>
+429|</div>
+430|
+431|<script>
+432|const pages = document.querySelectorAll('.page'), total = pages.length;
+433|let cur = 0;
+434|const dc = document.getElementById('dots');
+435|for(let i=0;i<total;i++){let d=document.createElement('button');d.className='dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dc.appendChild(d)}
+436|function goTo(n){
+437|  pages.forEach((p,i)=>{p.classList.toggle('active',i===n);p.classList.toggle('prev',i<n)});
+438|  cur=n;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+439|  document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').disabled=n===total-1;
+440|}
+441|function nextPage(){if(cur<total-1) goTo(cur+1)}
+442|function prevPage(){if(cur>0) goTo(cur-1)}
+443|document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown') nextPage();if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevPage()});
+444|</script>
+445|</body>
+446|</html>
+447|
