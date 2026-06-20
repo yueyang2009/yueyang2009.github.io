@@ -10,7 +10,7 @@
   <div class="case-tag high">7项风险</div>
   <p><strong>行业：</strong>耐火材料贸易<br>
   <strong>发现问题：</strong>银行流水53对过桥资金、股东债转股程序缺失、存货账面为零、进口豪车公私混用……</p>
-  <a href="/reports/naicai-report.html" target="_blank" class="case-link">📖 打开翻页报告 →</a>
+  <a href="/reports/naicai-report" target="_blank" class="case-link">📖 打开翻页报告 →</a>
 </div>
 
 ## 案例二：测绘高企
@@ -19,7 +19,7 @@
   <div class="case-tag high">刑事风险</div>
   <p><strong>行业：</strong>测绘服务（高新技术企业）<br>
   <strong>发现问题：</strong>10个个体户2,410万虚开发票（占成本76.4%）、薪酬1,089万挂账、控股股东大额往来……</p>
-  <a href="/reports/cehui-report.html" target="_blank" class="case-link">📖 打开翻页报告 →</a>
+  <a href="/reports/cehui-report" target="_blank" class="case-link">📖 打开翻页报告 →</a>
 </div>
 
 ---
