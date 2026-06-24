@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: '李岳阳 · 财税顾问',
-  description: '注册会计师·律师·高级管理会计师 — 财税合规、经营诊断、数字化改造',
+  title: '河南龙头会计服务有限公司',
+  description: '财税合规、经营诊断、股权设计、数字化改造 — 做中小民企最可信赖的财税参谋',
   lang: 'zh-CN',
   lastUpdated: true,
   cleanUrls: true,
@@ -14,12 +14,9 @@ export default defineConfig({
       { text: '关于', link: '/about' },
       { text: '联系', link: '/contact' },
     ],
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/yueyang2009' },
-    ],
     footer: {
-      message: '专业不是一切，信任才是第一步。',
-      copyright: '© 2026 李岳阳',
+      message: '先看局再看账，让财税为经营服务。',
+      copyright: '© 2026 河南龙头会计服务有限公司',
     },
   }
 })

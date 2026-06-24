@@ -1,18 +1,18 @@
 ---
 layout: home
 hero:
-  name: 李岳阳
-  text: 注册会计师 · 律师 · 高级管理会计师
-  tagline: 15年一线财税实战 | 深耕财务+税务+法律+经营四维体系
+  name: 河南龙头会计服务有限公司
+  text: 中小民企的财税参谋
+  tagline: 注册会计师 + 律师 + 高级管理会计师 联合服务 | 15年一线实战 · 合规 · 经营 · 数字化
   image:
     src: /hero.svg
-    alt: 李岳阳
+    alt: 河南龙头会计服务有限公司
   actions:
     - theme: brand
       text: 查看案例
       link: /cases
     - theme: alt
-      text: 联系我
+      text: 联系我们
       link: /contact
 
 features:
