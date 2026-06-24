@@ -1,0 +1,324 @@
+/* ===== 河南龙头会计服务有限公司 — 品牌主题 ===== */
+
+/* 品牌色 */
+:root {
+  --brand-dark: #0f2b4a;
+  --brand-blue: #1a56db;
+  --brand-light: #dbeafe;
+  --brand-accent: #e8a838;
+  --gray-bg: #f8fafc;
+  --gray-border: #e5e7eb;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+}
+
+/* 全局 */
+body {
+  font-family: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color: var(--text-primary);
+  background: #fff;
+}
+
+/* ===== 首页 Hero ===== */
+.custom-hero {
+  text-align: center;
+  padding: 80px 24px 60px;
+  background: linear-gradient(180deg, #f0f6ff 0%, #fff 100%);
+}
+.custom-hero .sub {
+  display: inline-block;
+  background: var(--brand-light);
+  color: var(--brand-blue);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.custom-hero h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+.custom-hero p.tag {
+  font-size: 18px;
+  color: var(--brand-blue);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.custom-hero p.desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+.custom-hero .actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.custom-hero .actions a {
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.custom-hero .actions a.primary {
+  background: var(--brand-blue);
+  color: #fff;
+}
+.custom-hero .actions a.primary:hover {
+  background: #1e40af;
+}
+.custom-hero .actions a.secondary {
+  background: #fff;
+  color: var(--brand-blue);
+  border: 1px solid var(--gray-border);
+}
+.custom-hero .actions a.secondary:hover {
+  background: var(--gray-bg);
+}
+
+/* ===== 服务卡片 ===== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 60px 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.services-grid .section-title {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.services-grid .section-title h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--brand-dark);
+}
+.services-grid .section-title p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 6px;
+}
+.svc-card {
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.svc-card:hover {
+  box-shadow: 0 4px 20px rgba(15,43,74,0.08);
+  transform: translateY(-2px);
+}
+.svc-card .icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+.svc-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-bottom: 8px;
+}
+.svc-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ===== 团队区域 ===== */
+.team-section {
+  background: var(--gray-bg);
+  padding: 60px 24px;
+  text-align: center;
+}
+.team-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 8px;
+}
+.team-section .subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.team-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 16px 20px;
+  border: 1px solid var(--gray-border);
+}
+.team-card .avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--brand-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  color: var(--brand-blue);
+}
+.team-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-bottom: 2px;
+}
+.team-card .role {
+  font-size: 12px;
+  color: var(--brand-blue);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.team-card .bio {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ===== 案例/联系入口 ===== */
+.cta-section {
+  padding: 60px 24px;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.cta-section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 8px;
+}
+.cta-section p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.cta-section .links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-section .links a {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.cta-section .links a.primary {
+  background: var(--brand-blue);
+  color: #fff;
+}
+.cta-section .links a.primary:hover {
+  background: #1e40af;
+}
+.cta-section .links a.outline {
+  border: 1px solid var(--gray-border);
+  color: var(--text-primary);
+}
+.cta-section .links a.outline:hover {
+  background: var(--gray-bg);
+}
+
+/* ===== 关于页团队卡片 ===== */
+.team-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+.team-member-card {
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.team-member-card .avatar-lg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--brand-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--brand-blue);
+  flex-shrink: 0;
+}
+.team-member-card .info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-bottom: 2px;
+}
+.team-member-card .info .role {
+  font-size: 12px;
+  color: var(--brand-blue);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.team-member-card .info .bio {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== 联系方式卡片 ===== */
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.contact-item {
+  background: var(--gray-bg);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.contact-item .icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.contact-item .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.contact-item .value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--brand-dark);
+}
+
+/* ===== 覆盖Vitepress默认 ===== */
+.VPHero, .VPHome, .VPFooter, .VPNav {
+  /* 保留默认布局，用自定义组件覆盖 */
+}

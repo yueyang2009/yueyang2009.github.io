@@ -1,19 +1,54 @@
 # 👤 关于我们
 
-## 我们是谁
-
 **河南龙头会计服务有限公司** — 中小民企财税参谋。
 
 由注册会计师、律师、高级管理会计师组成的团队，深耕财务+税务+法律+经营四维体系，累计服务河南省内数百家中小民营企业。
 
+---
+
 ## 我们的团队
 
-| 成员 | 角色 | 背景 |
-|:----|:-----|:-----|
-| 杜楠楠 | 总监 | 注册会计师、税务师、高级会计师 · 15年财税领域深耕 |
-| 赵晴 | 主管 | 财税顾问 · 企业财务体系搭建 |
-| 李静雯 | 主管 | 税务师（CTA）· 擅长税务历史问题处理 |
-| 李岳阳 | 主管 | 注册会计师、律师、高级管理会计师 · 7年头部会所+8年集团财务总监 |
+<div class="team-detail-grid">
+
+<div class="team-member-card">
+  <div class="avatar-lg">👤</div>
+  <div class="info">
+    <h4>杜楠楠</h4>
+    <div class="role">总监</div>
+    <div class="bio">注册会计师、税务师、高级会计师。15年财税领域深耕，10年大型集团一线财务管理经验，5年财税事务所从业及团队管理经验。擅长高端财税顾问、税务合规筹划、股权架构设计、历史乱账清理。</div>
+  </div>
+</div>
+
+<div class="team-member-card">
+  <div class="avatar-lg">👤</div>
+  <div class="info">
+    <h4>赵晴</h4>
+    <div class="role">主管</div>
+    <div class="bio">财税顾问，专注于企业财务体系搭建，协助企业从无序到有序的财务管理转型。</div>
+  </div>
+</div>
+
+<div class="team-member-card">
+  <div class="avatar-lg">👤</div>
+  <div class="info">
+    <h4>李静雯</h4>
+    <div class="role">主管</div>
+    <div class="bio">税务师（CTA）、中级会计师，5年+财税管理实战经验。精通企业工商全流程服务，擅长税务历史问题的处理与税务规划。民营企业财务系统建设终身推动者。</div>
+  </div>
+</div>
+
+<div class="team-member-card">
+  <div class="avatar-lg">👤</div>
+  <div class="info">
+    <h4>李岳阳</h4>
+    <div class="role">主管</div>
+    <div class="bio">注册会计师、律师、高级管理会计师。15年一线财税实战：7年头部会计师事务所执业 + 8年集团财务总监管理经验。深耕财务+税务+法律+经营四维体系。</div>
+  </div>
+</div>
+
+</div>
+
+---
 
 ## 我们能做什么
 
